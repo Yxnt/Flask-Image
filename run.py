@@ -27,6 +27,12 @@ def index(uri):
     if not path.exists(filepath):
         abort(404)
 
+    if 's' in allargs:
+        if allargs['s'] == '1':
+            content = Response(file_read(filepath), mimetype=filemime)
+            return content
+
+
     if filetype not in filetypelist:
         content = Response(file_read(filepath), mimetype=filemime)
         return content
