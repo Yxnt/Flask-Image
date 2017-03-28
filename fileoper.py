@@ -37,7 +37,6 @@ def img_resize(imgpath, args, imgtype=None):
         except ValueError as e:
             _percentage = 0
 
-
     if imgtype and (imgtype == 'jpg' or imgtype == 'JPG'):
         imgtype = 'JPEG'
     else:
@@ -46,6 +45,7 @@ def img_resize(imgpath, args, imgtype=None):
     with BytesIO() as b:
         try:
             with Image.open(imgpath) as im:
+
                 weight, height = im.size
 
                 if _percentage and (not _height and not _weight):
@@ -59,7 +59,10 @@ def img_resize(imgpath, args, imgtype=None):
                     return b.getvalue()
                 else:
                     if not _height and not _weight:
-
+                        if imgtype == 'PNG':
+                            im = im.convert('P')
+                            im.save(b,imgtype, optimize=True)
+                            return b.getvalue()
                         im.save(b, imgtype, quality=_quality)
                         return b.getvalue()
 
@@ -68,7 +71,6 @@ def img_resize(imgpath, args, imgtype=None):
                             _height = height
                     else:
                         _height = height
-
 
                     if _weight:
                         if _weight > weight:
@@ -81,6 +83,7 @@ def img_resize(imgpath, args, imgtype=None):
                     return b.getvalue()
         except OSError as e:
             pass
+
 
 def file_getmime(filepath):
     '''获取文件mime类型
@@ -98,11 +101,10 @@ def file_getmime(filepath):
 
 
 def file_read(filepath):
-
     with open(filepath, 'rb') as f:
         for i in f:
             yield i
 
 
 if __name__ == '__main__':
-    img_resize('img/1.jpg',imgtype='JPEG',args=None)
+    img_resize('img/1.jpg', imgtype='JPEG', args=None)
