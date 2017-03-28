@@ -15,16 +15,23 @@ app.config['RESOURCE_ROOT'] = 'img'
 def index(uri):
     filetypelist = ['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG']
     filetype = request.path.split('.')[-1]
-
-    # filepath = path.join(app.config.get('RESOURCE_ROOT'),uri)
-    filepath = app.config.get('RESOURCE_ROOT') +'/'+uri
+    filepath = app.config.get('RESOURCE_ROOT') + '/' +uri
     filemime = file_getmime(filepath)
+    if path.exists(filepath):
+        filesize = float(path.getsize(filepath) / 1024)
+    else:
+        return abort(404)
+
     allargs = request.args
 
     if not path.exists(filepath):
         abort(404)
 
     if filetype not in filetypelist:
+        content = Response(file_read(filepath), mimetype=filemime)
+        return content
+
+    if filesize <= 10.0:
         content = Response(file_read(filepath), mimetype=filemime)
         return content
 
