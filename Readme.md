@@ -23,3 +23,18 @@ p参数的结果是以当前图片的宽高为基准数×提供的百分比所�
 
 **当P参数存在时w和h无效**
 
+
+使用方式
+----
+
+首先确保python 是3.5以上的
+```
+git clone https://github.com/Yxnt/Flask-Image.git
+cd Flask-Image
+virtualenv venv
+source venv/bin/active && pip install -r requirements.txt
+mkdir img
+./start.sh
+```
+
+上传文件到img目录中，根据使用说明中的进行测试
